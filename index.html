@@ -82,14 +82,51 @@
                 return;
             }
 
-            // Atur loading state
             const button = $('#getButton');
             const buttonText = $('#buttonText');
             button.attr('disabled', true);
             buttonText.text('Mencari...');
             $('#weatherResult').removeClass('opacity-100').addClass('opacity-0');
 
+            const apiKey = "636d12716ac34c1aba722159250710";
+            const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;
 
+            $.ajax({
+                url: urlapi,
+                method: "GET",
+                success: function (data) {
+                   
+                    $('#namaLokasi').text(data.location.name);
+                    $('#negaraProvinsi').text(`${data.location.country}, ${data.location.region}`);
+                    
+                    
+                    $('#weatherIcon').attr('src', `https:${data.current.condition.icon}`);
+                    $('#kondisiCuaca').text(data.current.condition.text);
+                    
+                    $('#suhu').text(`${data.current.temp_c}°C`);
+                    $('#kelembapan').text(`${data.current.humidity}%`);
+                    
+                    $('#negara').text(data.location.country);
+                    $('#provinsi').text(data.location.region);
+                    $('#kecamatan').text(data.location.name); // Menambahkan data kecamatan/kota
+                    $('#longitude').text(data.location.lon);
+                    $('#latitude').text(data.location.lat);
+
+                    
+                    $('#weatherResult').removeClass('opacity-0').addClass('opacity-100');
+                },
+                error: function (error) {
+                    alert("Lokasi tidak ditemukan atau terjadi kesalahan. Silakan coba lagi.");
+                },
+                complete: function () {
+                    
+                    button.attr('disabled', false);
+                    buttonText.text('Cek Cuaca');
+                }
+            });
+        }
+
+        
             
     </script>
 
