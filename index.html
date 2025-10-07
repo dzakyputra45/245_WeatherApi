@@ -25,7 +25,7 @@
 
         
         <div id="weatherResult" class="mt-6 opacity-0 transition-opacity duration-500">
-            <!-- Header Lokasi & Waktu -->
+            
             <div class="text-center mb-4">
                 <h2 id="namaLokasi" class="text-3xl font-bold text-gray-800">Nama Lokasi</h2>
                 <p id="negaraProvinsi" class="text-md text-gray-500">Negara, Provinsi</p>
@@ -73,80 +73,4 @@
     </div>
 
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
     
-    <script>
-        // Fungsi untuk mengambil dan menampilkan data cuaca
-        function getWeather() {
-            const lokasi = $('#lokasiInput').val();
-            if (!lokasi) {
-                alert("Silakan masukkan nama lokasi terlebih dahulu.");
-                return;
-            }
-
-            // Atur loading state
-            const button = $('#getButton');
-            const buttonText = $('#buttonText');
-            button.attr('disabled', true);
-            buttonText.text('Mencari...');
-            $('#weatherResult').removeClass('opacity-100').addClass('opacity-0');
-
-
-            const apiKey = "636d12716ac34c1aba722159250710";
-            const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;
-
-            $.ajax({
-                url: urlapi,
-                method: "GET",
-                success: function (data) {
-                    // Update tampilan dengan data yang diterima
-                    $('#namaLokasi').text(data.location.name);
-                    $('#negaraProvinsi').text(`${data.location.country}, ${data.location.region}`);
-                    
-                    // Prepend 'https:' ke URL ikon dari API
-                    $('#weatherIcon').attr('src', `https:${data.current.condition.icon}`);
-                    $('#kondisiCuaca').text(data.current.condition.text);
-                    
-                    $('#suhu').text(`${data.current.temp_c}°C`);
-                    $('#kelembapan').text(`${data.current.humidity}%`);
-                    
-                    $('#negara').text(data.location.country);
-                    $('#provinsi').text(data.location.region);
-                    $('#kecamatan').text(data.location.name); // Menambahkan data kecamatan/kota
-                    $('#longitude').text(data.location.lon);
-                    $('#latitude').text(data.location.lat);
-
-                    // Tampilkan hasil dengan animasi fade-in
-                    $('#weatherResult').removeClass('opacity-0').addClass('opacity-100');
-                },
-                error: function (error) {
-                    alert("Lokasi tidak ditemukan atau terjadi kesalahan. Silakan coba lagi.");
-                },
-                complete: function () {
-                    // Kembalikan tombol ke state normal setelah selesai (baik sukses maupun error)
-                    button.attr('disabled', false);
-                    buttonText.text('Cek Cuaca');
-                }
-            });
-        }
-
-        // Event listener untuk tombol klik
-        $('#getButton').on('click', getWeather);
-        
-        // Event listener untuk tombol Enter di input box
-        $('#lokasiInput').on('keypress', function(e) {
-            if (e.which === 13) { // 13 adalah kode tombol Enter
-                getWeather();
-            }
-        });
-        
-        // Langsung tampilkan cuaca untuk lokasi default (Yogyakarta) saat halaman pertama kali dimuat
-        $(document).ready(function() {
-            getWeather();
-        });
-    </script>
-
-</body>
-</html>
-
