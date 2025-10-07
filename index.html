@@ -73,4 +73,25 @@
     </div>
 
     
-    
+     <script>
+        
+        function getWeather() {
+            const lokasi = $('#lokasiInput').val();
+            if (!lokasi) {
+                alert("Silakan masukkan nama lokasi terlebih dahulu.");
+                return;
+            }
+
+            // Atur loading state
+            const button = $('#getButton');
+            const buttonText = $('#buttonText');
+            button.attr('disabled', true);
+            buttonText.text('Mencari...');
+            $('#weatherResult').removeClass('opacity-100').addClass('opacity-0');
+
+
+            
+    </script>
+
+</body>
+</html>
